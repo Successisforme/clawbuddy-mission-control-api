@@ -114,7 +114,34 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // Token authentication
+  const url = new URL(req.url, `http://localhost:${PORT}`);
+
+  console.log(`${new Date().toISOString()} - ${req.method} ${url.pathname}`);
+
+  // Public routes (no auth required)
+  if (url.pathname === '/health') {
+    res.writeHead(200);
+    res.end(JSON.stringify({ 
+      status: 'ok', 
+      service: 'Mission Control API (LIVE)', 
+      version: '2.0.0',
+      data_source: dataCache ? dataCache.source : 'unknown',
+      last_update: dataCache ? dataCache.timestamp : null
+    }));
+    return;
+  }
+
+  if (url.pathname === '/') {
+    res.writeHead(200);
+    res.end(JSON.stringify({ 
+      service: 'Mission Control API',
+      version: '2.0.0',
+      endpoints: ['/api/all', '/api/kpis', '/api/deals', '/api/tasks', '/api/agents', '/api/calendar', '/api/chat', '/health']
+    }));
+    return;
+  }
+
+  // Token authentication for protected routes
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
 
@@ -123,10 +150,6 @@ const server = http.createServer((req, res) => {
     res.end(JSON.stringify({ error: 'Unauthorized - invalid or missing token' }));
     return;
   }
-
-  const url = new URL(req.url, `http://localhost:${PORT}`);
-
-  console.log(`${new Date().toISOString()} - ${req.method} ${url.pathname}`);
 
   let response;
 
@@ -158,16 +181,6 @@ const server = http.createServer((req, res) => {
     case '/api/trigger-sync':
       response = refreshData();
       response = { status: 'synced', timestamp: response.timestamp, source: response.source };
-      break;
-
-    case '/health':
-      response = { 
-        status: 'ok', 
-        service: 'Mission Control API (LIVE)', 
-        version: '2.0.0',
-        data_source: dataCache ? dataCache.source : 'unknown',
-        last_update: dataCache ? dataCache.timestamp : null
-      };
       break;
     
     case '/api/chat':
