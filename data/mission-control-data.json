@@ -1,0 +1,310 @@
+{
+  "timestamp": "2026-05-11T21:48:16.046093",
+  "source": "KPI Tracker Sync",
+  "kpis": {
+    "timestamp": "2026-05-11T21:48:16.048852",
+    "summary": {
+      "total_calls": 9,
+      "total_contacts": 7,
+      "total_responses": 4,
+      "total_offers": 6,
+      "total_contracts": 1,
+      "total_deals": 0,
+      "period_days": 30
+    },
+    "current_month": {
+      "month": "2026-05",
+      "calls": 9,
+      "contacts": 7,
+      "responses": 3,
+      "offers": 6,
+      "contracts": 1,
+      "deals": 0
+    },
+    "today": {
+      "date": "2026-05-11",
+      "calls": 0,
+      "contacts": 0,
+      "responses": 0,
+      "offers": 0,
+      "deals": 0
+    },
+    "conversion_ratios": {
+      "calls_to_contact": 77.8,
+      "contact_to_response": 57.1,
+      "response_to_offer": 150.0,
+      "offer_to_contract": 16.7,
+      "contract_to_close": 0.0,
+      "calls_per_deal": 0
+    },
+    "response_categories": {
+      "not_interested": 0,
+      "follow_up": 8,
+      "property_sold": 0,
+      "wrong_number": 0,
+      "do_not_call": 0
+    },
+    "daily_breakdown": [
+      {
+        "date": "2026-05-10",
+        "calls_made": 0,
+        "leads_contacted": 0,
+        "responses_received": 0,
+        "deals_closed": 0
+      },
+      {
+        "date": "2026-05-07",
+        "calls_made": 0,
+        "leads_contacted": 0,
+        "responses_received": 0,
+        "deals_closed": 0
+      },
+      {
+        "date": "2026-05-06",
+        "calls_made": 2,
+        "leads_contacted": 0,
+        "responses_received": 0,
+        "deals_closed": 0
+      },
+      {
+        "date": "2026-05-04",
+        "calls_made": 0,
+        "leads_contacted": 3,
+        "responses_received": 3,
+        "deals_closed": 0
+      }
+    ],
+    "targets": {
+      "monthly_deals": 1,
+      "annual_deals": 12,
+      "calls_per_deal": 75
+    }
+  },
+  "deals": {
+    "active": [
+      {
+        "id": "deal-001",
+        "address": "123 Main St, Charlotte, NC",
+        "status": "under_contract",
+        "stage": "title_search",
+        "purchase_price": 45000,
+        "estimated_sale": 65000,
+        "spread": 20000,
+        "days_in_pipeline": 3,
+        "next_action": "Complete title search",
+        "priority": "high",
+        "seller_motivation": "Inherited property, needs to sell fast"
+      }
+    ],
+    "pipeline": {
+      "lead": 12,
+      "contacted": 5,
+      "offer_made": 2,
+      "under_contract": 1,
+      "closed": 1
+    },
+    "this_month": {
+      "revenue": 15000,
+      "deals_closed": 1,
+      "avg_spread": 15000
+    }
+  },
+  "tasks": {
+    "backlog": [
+      {
+        "id": "t1",
+        "title": "Setup SmrtPhone dialer",
+        "priority": "high",
+        "tags": [
+          "setup",
+          "calling"
+        ],
+        "created": "2026-05-09"
+      },
+      {
+        "id": "t2",
+        "title": "Import REI Sift deals",
+        "priority": "high",
+        "tags": [
+          "data",
+          "integration"
+        ],
+        "created": "2026-05-09"
+      },
+      {
+        "id": "t8",
+        "title": "Create buyer outreach templates",
+        "priority": "medium",
+        "tags": [
+          "dispo",
+          "templates"
+        ],
+        "created": "2026-05-08"
+      }
+    ],
+    "in_progress": [
+      {
+        "id": "t3",
+        "title": "Connect Mission Control",
+        "priority": "high",
+        "tags": [
+          "integration",
+          "active"
+        ],
+        "assignee": "KPI Kenny",
+        "started": "2026-05-09"
+      },
+      {
+        "id": "t4",
+        "title": "Review SMS campaign performance",
+        "priority": "medium",
+        "tags": [
+          "marketing",
+          "kpi"
+        ],
+        "assignee": "Data Agent",
+        "started": "2026-05-08"
+      }
+    ],
+    "review": [
+      {
+        "id": "t6",
+        "title": "Validate KPI tracking accuracy",
+        "priority": "medium",
+        "tags": [
+          "kpi",
+          "qa"
+        ],
+        "assignee": "KPI Kenny"
+      }
+    ],
+    "complete": [
+      {
+        "id": "t7",
+        "title": "Created Mission Control integration",
+        "completed": "2026-05-09",
+        "tags": [
+          "integration"
+        ]
+      },
+      {
+        "id": "t9",
+        "title": "Closed April deal",
+        "completed": "2026-04-30",
+        "tags": [
+          "deal",
+          "$15k"
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "agents": [
+      {
+        "id": "kpi-kenny",
+        "name": "KPI Kenny",
+        "role": "KPI Tracker",
+        "status": "active",
+        "current_task": "Mission Control integration",
+        "last_activity": "2026-05-11T21:48:16.049068",
+        "skills": [
+          "Data Analysis",
+          "Performance Tracking",
+          "Reporting"
+        ],
+        "metrics": {
+          "tasks_completed": 8,
+          "accuracy": "98%"
+        }
+      },
+      {
+        "id": "data-agent",
+        "name": "Data Agent",
+        "role": "Data Management",
+        "status": "standby",
+        "current_task": "Waiting for REI Sift sync",
+        "last_activity": "2026-05-08T20:00:00Z",
+        "skills": [
+          "Data Entry",
+          "List Management",
+          "REI Sift"
+        ],
+        "metrics": {
+          "records_processed": 0,
+          "accuracy": "99%"
+        }
+      },
+      {
+        "id": "acquisitions-1",
+        "name": "Acquisitions Agent 1",
+        "role": "Lead Qualification",
+        "status": "standby",
+        "current_task": "Waiting for SmrtPhone setup",
+        "last_activity": "2026-05-01T10:00:00Z",
+        "skills": [
+          "Cold Calling",
+          "Lead Qualification",
+          "Follow-up"
+        ],
+        "metrics": {
+          "calls_made": 0,
+          "leads_qualified": 0
+        }
+      },
+      {
+        "id": "dispo-1",
+        "name": "Disposition Agent 1",
+        "role": "Buyer Outreach",
+        "status": "active",
+        "current_task": "Building buyer list",
+        "last_activity": "2026-05-09T14:00:00Z",
+        "skills": [
+          "Buyer Relations",
+          "Marketing",
+          "Deal Coordination"
+        ],
+        "metrics": {
+          "buyers_contacted": 0,
+          "deals_marketed": 0
+        }
+      }
+    ]
+  },
+  "calendar": {
+    "events": [
+      {
+        "id": "e1",
+        "title": "Weekly KPI Review",
+        "date": "2026-05-11",
+        "time": "19:00",
+        "type": "review",
+        "description": "Automated weekly report delivery"
+      },
+      {
+        "id": "e2",
+        "title": "SmrtPhone License Expected",
+        "date": "2026-05-15",
+        "type": "milestone",
+        "description": "Cold calling operations can resume"
+      },
+      {
+        "id": "e3",
+        "title": "Mission Control Sync Complete",
+        "date": "2026-05-09",
+        "time": "14:50",
+        "type": "milestone",
+        "description": "Real-time sync established"
+      }
+    ],
+    "upcoming": [
+      {
+        "title": "Weekly KPI Review",
+        "days_until": 2
+      },
+      {
+        "title": "SmrtPhone License",
+        "days_until": 6
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: clawbuddy-mission-control-api
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node mission-control-api-live.js
+    envVars:
+      - key: MISSION_CONTROL_TOKEN
+        value: clawbuddy-mission-control-live-2024
+      - key: PORT
+        value: 10000
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /health
