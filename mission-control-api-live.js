@@ -12,6 +12,7 @@
  * - GET /api/calendar - Upcoming events
  * - GET /api/all - Complete data snapshot
  * - GET /api/trigger-sync - Force data refresh
+ * - POST /api/chat - Agent chat with agent_id routing
  *
  * Webhooks:
  * - POST to http://localhost:3457/webhook/kpi-update to trigger sync
@@ -36,6 +37,47 @@ const API_TOKEN = process.env.MISSION_CONTROL_TOKEN || process.env.API_TOKEN || 
 let dataCache = null;
 let lastCacheUpdate = 0;
 const CACHE_TTL = 5000; // 5 seconds
+
+// Agent definitions with contexts
+const AGENTS = {
+  'kpi-kenny': {
+    name: 'KPI Kenny',
+    role: 'KPI Tracker',
+    subtitle: 'Tracks KPIs • Reports metrics',
+    context: 'You have access to the KPI tracker database. You can report on calls made, leads contacted, responses, offers, contracts, and deals closed. You calculate conversion ratios and provide actionable insights.'
+  },
+  'data-agent': {
+    name: 'Data Agent',
+    role: 'Data Manager',
+    subtitle: 'Manages REI Sift data • Exports leads',
+    context: 'You manage data operations from REI Sift. You can extract lead lists, filter by criteria (absentee, vacant, high equity), and export data for campaigns. You understand the Sensei Flow methodology.'
+  },
+  'acquisitions-1': {
+    name: 'Acquisitions Agent',
+    role: 'Acquisition Specialist',
+    subtitle: 'Finds deals • Makes offers',
+    context: 'You focus on acquisitions. You analyze deals, run comps, calculate offers, and manage the pipeline from lead to contract. You know North Carolina and South Carolina markets.'
+  },
+  'dispo-1': {
+    name: 'Dispo Agent',
+    role: 'Disposition Manager',
+    subtitle: 'Sells deals • Manages buyers',
+    context: 'You handle dispositions. You manage the buyer list, market properties, coordinate showings, and get deals to closing. You understand assignment and double-close strategies.'
+  }
+};
+
+function getAgentById(agentId, fallbackName, fallbackRole, fallbackSubtitle) {
+  const agent = AGENTS[agentId];
+  if (agent) return agent;
+  
+  // Fallback to provided values or generic agent
+  return {
+    name: fallbackName || 'Agent',
+    role: fallbackRole || 'Assistant',
+    subtitle: fallbackSubtitle || '',
+    context: 'You are a helpful assistant for the Private Wealth Holdings real estate operation.'
+  };
+}
 
 // Ensure data directory exists
 const dataDir = path.join(__dirname, 'data');
@@ -195,7 +237,7 @@ const server = http.createServer((req, res) => {
       req.on('data', chunk => body += chunk);
       req.on('end', async () => {
         try {
-          const { agent_name = 'Agent', agent_role = '', agent_subtitle = '', message, history = [] } = JSON.parse(body);
+          const { agent_id, agent_name, agent_role, agent_subtitle, message, history = [] } = JSON.parse(body);
           
           if (!message) {
             res.writeHead(400);
@@ -203,14 +245,22 @@ const server = http.createServer((req, res) => {
             return;
           }
 
-          const system = `You are ${agent_name}, ${agent_role} at Private Wealth Holdings (OpenClaw mission control). ${agent_subtitle} Stay in character. Be concise and useful.`;
+          // Get agent by ID or fallback to provided values
+          const agent = getAgentById(agent_id, agent_name, agent_role, agent_subtitle);
+          
+          // Build system prompt with agent context
+          const system = `You are ${agent.name}, ${agent.role} at Private Wealth Holdings (OpenClaw mission control). ${agent.subtitle}
+
+${agent.context}
+
+Stay in character. Be concise, direct, and useful. No fluff. Results over everything.`;
+
           const msgs = [
-            { role: 'system', content: system },
             ...history.slice(-20).map(m => ({ role: m.role === 'agent' ? 'assistant' : m.role, content: m.content })),
             { role: 'user', content: message },
           ];
 
-          // Use Anthropic since that's what you have
+          // Use Anthropic
           const anthropicKey = process.env.ANTHROPIC_API_KEY;
           if (!anthropicKey) {
             res.writeHead(500);
@@ -281,14 +331,15 @@ server.listen(PORT, () => {
   Server running on http://localhost:${PORT}
 
   LIVE endpoints:
-    - GET http://localhost:${PORT}/api/all     (complete live snapshot)
-    - GET http://localhost:${PORT}/api/kpis    (live KPIs from DB)
-    - GET http://localhost:${PORT}/api/deals   (active deals)
-    - GET http://localhost:${PORT}/api/tasks   (task board)
-    - GET http://localhost:${PORT}/api/agents  (team status)
-    - GET http://localhost:${PORT}/api/calendar (events)
-    - GET http://localhost:${PORT}/api/trigger-sync (force refresh)
-    - GET http://localhost:${PORT}/health      (status check)
+    - GET  http://localhost:${PORT}/api/all     (complete live snapshot)
+    - GET  http://localhost:${PORT}/api/kpis    (live KPIs from DB)
+    - GET  http://localhost:${PORT}/api/deals   (active deals)
+    - GET  http://localhost:${PORT}/api/tasks   (task board)
+    - GET  http://localhost:${PORT}/api/agents  (team status)
+    - GET  http://localhost:${PORT}/api/calendar (events)
+    - POST http://localhost:${PORT}/api/chat    (agent chat)
+    - GET  http://localhost:${PORT}/api/trigger-sync (force refresh)
+    - GET  http://localhost:${PORT}/health      (status check)
 
   From Lovable app:
     fetch('http://localhost:3456/api/all')
