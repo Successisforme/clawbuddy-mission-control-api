@@ -2,10 +2,10 @@
   "name": "clawbuddy-mission-control-api",
   "version": "1.0.0",
   "description": "Mission Control API for KPI data",
-  "main": "server.js",
+  "main": "mission-control-api-live.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node mission-control-api-live.js",
+    "dev": "node mission-control-api-live.js"
   },
   "engines": {
     "node": ">=18.0.0"
